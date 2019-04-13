@@ -1,4 +1,27 @@
 <h1>Merchant List</h1>
+
+<h2>Merchant Leaderboard</h2>
+<%= tag.div class: "card" do %>
+  <%= tag.section class: "statistics card-body float-left m-4" do %>
+    <%= tag.section id: "top-ten-merchants-by-items-this-month", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Merchants This Month</h5>
+      <ul>
+        <% @top_ten_merchants_by_items_this_month.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= tag.section id: "top-ten-merchants-by-items-last-month", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Merchants Last Month</h5>
+      <ul>
+        <% @top_ten_merchants_by_items_last_month.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
+
 <%= tag.div class: "card" do %>
   <%= tag.section class: "statistics card-body float-left m-4" do %>
     <%= tag.section id: "top-three-merchants-revenue", class: "card-body float-left m-2" do %>

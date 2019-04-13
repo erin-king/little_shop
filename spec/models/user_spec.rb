@@ -209,13 +209,13 @@ RSpec.describe User, type: :model do
         u5 = create(:user, state: "IA", city: "Des Moines")
         u6 = create(:user, state: "IA", city: "Des Moines")
         @m1, @m2, @m3, @m4, @m5, @m6, @m7 = create_list(:merchant, 7)
-        i1 = create(:item, merchant_id: @m1.id)
-        i2 = create(:item, merchant_id: @m2.id)
-        i3 = create(:item, merchant_id: @m3.id)
-        i4 = create(:item, merchant_id: @m4.id)
-        i5 = create(:item, merchant_id: @m5.id)
-        i6 = create(:item, merchant_id: @m6.id)
-        i7 = create(:item, merchant_id: @m7.id)
+        @i1 = create(:item, merchant_id: @m1.id)
+        @i2 = create(:item, merchant_id: @m2.id)
+        @i3 = create(:item, merchant_id: @m3.id)
+        @i4 = create(:item, merchant_id: @m4.id)
+        @i5 = create(:item, merchant_id: @m5.id)
+        @i6 = create(:item, merchant_id: @m6.id)
+        @i7 = create(:item, merchant_id: @m7.id)
         o1 = create(:shipped_order, user: u1)
         o2 = create(:shipped_order, user: u2)
         o3 = create(:shipped_order, user: u3)
@@ -223,13 +223,65 @@ RSpec.describe User, type: :model do
         o5 = create(:cancelled_order, user: u5)
         o6 = create(:shipped_order, user: u6)
         o7 = create(:shipped_order, user: u6)
-        oi1 = create(:fulfilled_order_item, item: i1, order: o1, created_at: 1.days.ago)
-        oi2 = create(:fulfilled_order_item, item: i2, order: o2, created_at: 7.days.ago)
-        oi3 = create(:fulfilled_order_item, item: i3, order: o3, created_at: 6.days.ago)
-        oi4 = create(:order_item, item: i4, order: o4, created_at: 4.days.ago)
-        oi5 = create(:order_item, item: i5, order: o5, created_at: 5.days.ago)
-        oi6 = create(:fulfilled_order_item, item: i6, order: o6, created_at: 3.days.ago)
-        oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
+        oi1 = create(:fulfilled_order_item, item: @i1, order: o1, created_at: 1.days.ago)
+        oi2 = create(:fulfilled_order_item, item: @i2, order: o2, created_at: 7.days.ago)
+        oi3 = create(:fulfilled_order_item, item: @i3, order: o3, created_at: 6.days.ago)
+        oi4 = create(:order_item, item: @i4, order: o4, created_at: 4.days.ago)
+        oi5 = create(:order_item, item: @i5, order: o5, created_at: 5.days.ago)
+        oi6 = create(:fulfilled_order_item, item: @i6, order: o6, created_at: 3.days.ago)
+        oi7 = create(:fulfilled_order_item, item: @i7, order: o7, created_at: 2.days.ago)
+      end
+
+      it ".top_ten_merchants_by_items(start_date, end_date)" do
+        u7 = create(:user, state: "MI", city: "Frankenmuth")
+        @m8 = create(:merchant)
+        @m9 = create(:merchant)
+        @m10 = create(:merchant)
+        @m11 = create(:merchant)
+        @m12 = create(:merchant)
+        @m13 = create(:merchant)
+        i8 = create(:item, merchant_id: @m8.id)
+        i9 = create(:item, merchant_id: @m9.id)
+        i10 = create(:item, merchant_id: @m10.id)
+        i11 = create(:item, merchant_id: @m11.id)
+        i12 = create(:item, merchant_id: @m12.id)
+        i13 = create(:item, merchant_id: @m13.id)
+        o8 = create(:shipped_order, user: u7)
+        o9 = create(:shipped_order, user: u7)
+        o10 = create(:shipped_order, user: u7)
+        o11 = create(:shipped_order, user: u7)
+        o12 = create(:shipped_order, user: u7)
+        o13 = create(:shipped_order, user: u7)
+        oi8 = create(:fulfilled_order_item, item: i8, order: o8, created_at: 2.days.ago)
+        oi9 = create(:fulfilled_order_item, item: i9, order: o9, created_at: 2.days.ago)
+        oi10 = create(:fulfilled_order_item, item: i10, order: o10, created_at: 2.days.ago)
+        oi11 = create(:fulfilled_order_item, item: i11, order: o11, created_at: 2.days.ago)
+        oi12 = create(:fulfilled_order_item, item: i12, order: o12, created_at: 2.days.ago)
+        oi13 = create(:fulfilled_order_item, item: i13, order: o13, created_at: 2.days.ago)
+        #Last Month
+        oi14 = create(:fulfilled_order_item, item: i8, order: o8, updated_at: 1.month.ago)
+        oi15 = create(:fulfilled_order_item, item: i9, order: o9, updated_at: 1.month.ago)
+        oi16 = create(:fulfilled_order_item, item: i10, order: o10, updated_at: 1.month.ago)
+        oi17 = create(:fulfilled_order_item, item: i11, order: o11, updated_at: 1.month.ago)
+        oi18 = create(:fulfilled_order_item, item: i12, order: o12, updated_at: 1.month.ago)
+        oi19 = create(:fulfilled_order_item, item: @i1, order: o12, updated_at: 1.month.ago)
+        oi20 = create(:fulfilled_order_item, item: @i2, order: o12, updated_at: 1.month.ago)
+        oi21 = create(:fulfilled_order_item, item: @i3, order: o12, updated_at: 1.month.ago)
+        oi22 = create(:fulfilled_order_item, item: @i4, order: o12, updated_at: 1.month.ago)
+        oi23 = create(:fulfilled_order_item, item: @i5, order: o12, updated_at: 1.month.ago)
+        oi24 = create(:fulfilled_order_item, item: @i6, order: o12, updated_at: 1.month.ago)
+        oi25 = create(:fulfilled_order_item, item: @i7, order: o12, updated_at: 1.month.ago)
+
+        start_date_this_month = DateTime.now.beginning_of_month
+        end_date_this_month = DateTime.now.end_of_month
+        start_date_next_month = DateTime.now.next_month.beginning_of_month
+        end_date_next_month = DateTime.now.next_month.end_of_month
+        start_date_last_month = DateTime.now.last_month.beginning_of_month
+        end_date_last_month = DateTime.now.last_month.end_of_month
+
+        expect(User.top_ten_merchants_by_items(start_date_next_month, end_date_next_month)).to eq([]) #next month has no orders
+        expect(User.top_ten_merchants_by_items(start_date_this_month, end_date_this_month)).to eq([@m13, @m12, @m11, @m10, @m9, @m8, @m7, @m6, @m3, @m2])
+        expect(User.top_ten_merchants_by_items(start_date_last_month, end_date_last_month)).to eq([@m7, @m6, @m5, @m4, @m3, @m2, @m1, @m12, @m11, @m10])
       end
 
       it ".merchants_sorted_by_revenue" do

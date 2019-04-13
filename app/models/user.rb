@@ -96,6 +96,16 @@ class User < ApplicationRecord
          .limit(1).first
   end
 
+  def self.top_ten_merchants_by_items(start_date, end_date)
+    self.joins(items: :order_items)
+    .where('order_items.fulfilled = true')
+    .where("order_items.updated_at >= '#{start_date.strftime('%F')}' AND order_items.updated_at < '#{end_date.strftime('%F')}'")
+    .group(:id)
+    .order('sum(order_items.quantity) DESC')
+    .select("users.name, users.id")
+    .limit(10)
+  end
+
   def self.active_merchants
     where(role: :merchant, active: true)
   end
