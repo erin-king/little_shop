@@ -232,6 +232,45 @@ RSpec.describe User, type: :model do
         oi7 = create(:fulfilled_order_item, item: i7, order: o7, created_at: 2.days.ago)
       end
 
+      it ".top_ten_merchants_by_items(start_date, end_date)" do
+        u7 = create(:user, state: "MI", city: "Frankenmuth")
+        @m8 = create(:merchant)
+        @m9 = create(:merchant)
+        @m10 = create(:merchant)
+        @m11 = create(:merchant)
+        @m12 = create(:merchant)
+        @m13 = create(:merchant)
+        i8 = create(:item, merchant_id: @m8.id)
+        i9 = create(:item, merchant_id: @m9.id)
+        i10 = create(:item, merchant_id: @m10.id)
+        i11 = create(:item, merchant_id: @m11.id)
+        i12 = create(:item, merchant_id: @m12.id)
+        i13 = create(:item, merchant_id: @m13.id)
+        o8 = create(:shipped_order, user: u7)
+        o9 = create(:shipped_order, user: u7)
+        o10 = create(:shipped_order, user: u7)
+        o11 = create(:shipped_order, user: u7)
+        o12 = create(:shipped_order, user: u7)
+        o13 = create(:shipped_order, user: u7)
+        oi8 = create(:fulfilled_order_item, item: i8, order: o8, created_at: 2.days.ago)
+        oi9 = create(:fulfilled_order_item, item: i9, order: o9, created_at: 2.days.ago)
+        oi10 = create(:fulfilled_order_item, item: i10, order: o10, created_at: 2.days.ago)
+        oi11 = create(:fulfilled_order_item, item: i11, order: o11, created_at: 2.days.ago)
+        oi12 = create(:fulfilled_order_item, item: i12, order: o12, created_at: 2.days.ago)
+        oi13 = create(:fulfilled_order_item, item: i13, order: o13, created_at: 2.days.ago)
+
+        start_date_this_month = DateTime.now.beginning_of_month
+        end_date_this_month = DateTime.now.end_of_month
+        start_date_next_month = DateTime.now.next_month.beginning_of_month
+        end_date_next_month = DateTime.now.next_month.end_of_month
+        start_date_last_month = DateTime.now.last_month.beginning_of_month
+        end_date_last_month = DateTime.now.last_month.end_of_month
+
+        expect(User.top_ten_merchants_by_items(start_date_next_month, end_date_next_month)).to eq([]) #next month has no orders
+        expect(User.top_ten_merchants_by_items(start_date_this_month, end_date_this_month)).to eq([@m13, @m12, @m11, @m10, @m9, @m8, @m7, @m6, @m3, @m2])
+        expect(User.top_ten_merchants_by_items(start_date_last_month, end_date_last_month)).to eq([])
+      end
+
       it ".merchants_sorted_by_revenue" do
         expect(User.merchants_sorted_by_revenue).to eq([@m7, @m6, @m3, @m2, @m1])
       end

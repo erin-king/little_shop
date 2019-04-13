@@ -96,6 +96,34 @@ class User < ApplicationRecord
          .limit(1).first
   end
 
+  # Erin's Project
+    # merchants = User.where(role: 1)
+    # merchants.select(:id, :name)
+    #          .joins(items: :order_items)
+    #          .where('order_items.fulfilled = true')
+    #          .where("order_items.updated_at >= '#{DateTime.now.beginning_of_month.strftime('%F')}' AND order_items.updated_at < '#{DateTime.now.end_of_month.strftime('%F')}'")
+    #          .group(:id)
+
+   # merchants.select('users.id, users.name, sum(order_items.quantity)').joins(items: :order_items).where('order_items.fulfilled = true').where("order_items.updated_at >= '#{DateTime.now.beginning_of_month.strftime('%F')}' AND order_items.updated_at < '#{DateTime.now.end_of_month.strftime('%F')}'").group(:id)
+   # User.select('users.id, users.name, sum(order_items.quantity)').joins(items: :order_items).where(role: 1).where('order_items.fulfilled = true').where("order_items.updated_at >= '#{DateTime.now.beginning_of_month.strftime('%F')}' AND order_items.updated_at < '#{DateTime.now.end_of_month.strftime('%F')}'").group(:id)
+
+   # SELECT users.name, users.id, sum(order_items.quantity) as total_items FROM users
+   # JOIN items ON users.id = items.merchant_id
+   # JOIN order_items ON order_items.item_id = items.id
+   # WHERE order_items.updated_at >= '2019-04-01' AND
+   # 	order_items.updated_at < '2019-05-01'
+   # GROUP BY users.id
+   # ORDER BY total_items DESC;
+  def self.top_ten_merchants_by_items(start_date, end_date)
+    self.joins(items: :order_items)
+    .where('order_items.fulfilled = true')
+    .where("order_items.updated_at >= '#{start_date.strftime('%F')}' AND order_items.updated_at < '#{end_date.strftime('%F')}'")
+    .group(:id)
+    .order('sum(order_items.quantity) DESC')
+    .select("users.name, users.id")
+    .limit(10)
+  end
+
   def self.active_merchants
     where(role: :merchant, active: true)
   end
