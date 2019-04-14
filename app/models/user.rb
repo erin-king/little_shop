@@ -106,6 +106,19 @@ class User < ApplicationRecord
     .limit(10)
   end
 
+  def self.top_ten_merchants_by_fulfilled_orders(start_date, end_date)
+    self.joins(:items)
+        .joins('join order_items on items.id = order_items.item_id')
+        .joins('join orders on orders.id = order_items.order_id')
+        .where('order_items.fulfilled = true')
+        .where("order_items.updated_at >= '#{start_date.strftime('%F')}' AND order_items.updated_at < '#{end_date.strftime('%F')}'")
+        .where('orders.status IN (1, 2)')
+        .group(:id)
+        .order('count(orders) DESC')
+        .select('users.name, users.id')
+        .limit(10)
+  end
+
   def self.active_merchants
     where(role: :merchant, active: true)
   end

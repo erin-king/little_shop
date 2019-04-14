@@ -4,7 +4,7 @@
 <%= tag.div class: "card" do %>
   <%= tag.section class: "statistics card-body float-left m-4" do %>
     <%= tag.section id: "top-ten-merchants-by-items-this-month", class: "card-body float-left m-2" do %>
-      <h5 class="card-title">Top Merchants This Month</h5>
+      <h5 class="card-title">Top Merchants By Items Sold This Month</h5>
       <ul>
         <% @top_ten_merchants_by_items_this_month.each do |merchant| %>
           <li><%= merchant.name %></li>
@@ -12,9 +12,25 @@
       </ul>
     <% end %>
     <%= tag.section id: "top-ten-merchants-by-items-last-month", class: "card-body float-left m-2" do %>
-      <h5 class="card-title">Top Merchants Last Month</h5>
+      <h5 class="card-title">Top Merchants By Items Sold Last Month</h5>
       <ul>
         <% @top_ten_merchants_by_items_last_month.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= tag.section id: "top-ten-merchants-fulfilled-orders-this-month", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Order Fulfilling Merchants This Month</h5>
+      <ul>
+        <% @top_ten_merchants_by_fulfilled_orders_this_month.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <%= tag.section id: "top-ten-merchants-fulfilled-orders-last-month", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">Top Order Fulfilling Merchants Last Month</h5>
+      <ul>
+        <% @top_ten_merchants_by_fulfilled_orders_last_month.each do |merchant| %>
           <li><%= merchant.name %></li>
         <% end %>
       </ul>
