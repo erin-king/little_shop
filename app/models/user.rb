@@ -108,6 +108,18 @@ class User < ApplicationRecord
         .limit(5)
   end
 
+  def self.top_five_fastest_fulfilling_merchants_user_state(state)
+    self.joins('as merchants JOIN items ON items.merchant_id = merchants.id')
+        .joins('JOIN order_items ON order_items.item_id = items.id')
+        .joins('JOIN orders ON orders.id = order_items.order_id')
+        .joins('JOIN users ON users.id = orders.user_id')
+        .where("users.state = '#{state}'")
+        .where('orders.status <> 3')
+        .group('merchants.id')
+        .select('merchants.*, avg(order_items.updated_at - order_items.created_at) AS fulfillment_time')
+        .limit(5)
+  end
+
   def self.top_ten_merchants_by_items(start_date, end_date)
     self.joins(items: :order_items)
     .where('order_items.fulfilled = true')

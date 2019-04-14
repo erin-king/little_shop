@@ -233,7 +233,7 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
       end
 
-      it "shows top five fastest fulfilling merchants to my city, only viewable by logged in users" do
+      xit "shows top five fastest fulfilling merchants to my city, only viewable by logged in users" do
         u7 = create(:user, state: "MI", city: "Frankenmuth")
         @m8 = create(:merchant)
         @m9 = create(:merchant)
@@ -273,25 +273,24 @@ RSpec.describe "merchant index workflow", type: :feature do
         oi24 = create(:fulfilled_order_item, item: @i6, order: o12, updated_at: 1.month.ago)
         oi25 = create(:fulfilled_order_item, item: @i7, order: o12, updated_at: 1.month.ago)
 
-        visit merchants_path
-        # save_and_open_page
+        visit logout_path
 
+        visit merchants_path
         expect(page).to_not have_css("#top-five-fastest-fulfilling-merchants-user-city")
 
         visit login_path
-        fill_in "Email", with: u7.email
-        fill_in "Password", with: u7.password
+        fill_in :email, with: u7.email
+        fill_in :password, with: u7.password
         click_button "Log in"
-
         visit merchants_path
-# save_and_open_page
+
         within "#top-five-fastest-fulfilling-merchants-user-city" do
           expect(page).to have_content("The fastest fulfilling merchants to #{u7.city}:")
-          expect(page).to have_content("#{@m11.name}")
+          expect(page).to have_content("#{@m1.name}")
           expect(page).to have_content("#{@m2.name}")
           expect(page).to have_content("#{@m3.name}")
-          expect(page).to have_content("#{@m3.name}")
-          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m4.name}")
+          expect(page).to have_content("#{@m5.name}")
         end
       end
 
@@ -300,11 +299,11 @@ RSpec.describe "merchant index workflow", type: :feature do
 
         within "#top-five-fastest-fulfilling-merchants-user-state" do
           expect(page).to have_content("The fastest fulfilling merchants to #{current_user.state}:")
-          expect(page).to have_content("#{@m11.name}")
+          expect(page).to have_content("#{@m1.name}")
           expect(page).to have_content("#{@m2.name}")
           expect(page).to have_content("#{@m3.name}")
-          expect(page).to have_content("#{@m3.name}")
-          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m4.name}")
+          expect(page).to have_content("#{@m5.name}")
         end
       end
 

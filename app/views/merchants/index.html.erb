@@ -8,7 +8,16 @@
     <%= tag.section id: "top-five-fastest-fulfilling-merchants-user-city", class: "card-body float-left m-2" do %>
       <h5 class="card-title">The fastest fulfilling merchants to <%= "#{current_user.city}:"%></h5>
       <ul>
-        <% @top_five_fastest_fulfilling_merchants_user_city.each do |merchant| %>
+        <% @top_five_fastest_fulfilling_merchants_city.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= tag.section id: "top-five-fastest-fulfilling-merchants-user-state", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">The fastest fulfilling merchants to <%= "#{current_user.state}:"%></h5>
+      <ul>
+        <% @top_five_fastest_fulfilling_merchants_state.each do |merchant| %>
           <li><%= merchant.name %></li>
         <% end %>
       </ul>
