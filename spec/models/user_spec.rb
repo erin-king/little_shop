@@ -304,7 +304,7 @@ RSpec.describe User, type: :model do
         o11 = create(:shipped_order, user: u7)
         o12 = create(:shipped_order, user: u7)
         o13 = create(:shipped_order, user: u7)
-        oi8 = create(:fulfilled_order_item, item: i8, order: o8, created_at: 2.days.ago)
+        oi8 = create(:fulfilled_order_item, item: i11, order: o8, created_at: 2.days.ago)
         oi9 = create(:fulfilled_order_item, item: i9, order: o9, created_at: 2.days.ago)
         oi10 = create(:fulfilled_order_item, item: i10, order: o10, created_at: 2.days.ago)
         oi11 = create(:fulfilled_order_item, item: i11, order: o11, created_at: 2.days.ago)
@@ -329,8 +329,8 @@ RSpec.describe User, type: :model do
         start_date_last_month = DateTime.now.last_month.beginning_of_month
         end_date_last_month = DateTime.now.last_month.end_of_month
 
-        expect(User.top_ten_merchants_by_fulfilled_orders(start_date_this_month, end_date_this_month)).to eq([@m1, @m2, @m3, @m10, @m11, @m12, @m6, @m7, @m8, @m9])
-        expect(User.top_ten_merchants_by_fulfilled_orders(start_date_last_month, end_date_last_month)).to eq([])
+        expect(User.top_ten_merchants_by_fulfilled_orders(start_date_this_month, end_date_this_month)).to eq([@m11, @m2, @m3, @m6, @m7, @m9, @m10, @m12, @m1, @m13])
+        expect(User.top_ten_merchants_by_fulfilled_orders(start_date_last_month, end_date_last_month)).to eq([@m1, @m2, @m3, @m4, @m5, @m6, @m7, @m8, @m9, @m10])
       end
 
       it ".merchants_sorted_by_revenue" do

@@ -111,25 +111,12 @@ class User < ApplicationRecord
         .joins('join order_items on items.id = order_items.item_id')
         .joins('join orders on orders.id = order_items.order_id')
         .where('order_items.fulfilled = true')
-        .where("orders.updated_at >= '#{start_date.strftime('%F')}' AND orders.updated_at < '#{end_date.strftime('%F')}'")
+        .where("order_items.updated_at >= '#{start_date.strftime('%F')}' AND order_items.updated_at < '#{end_date.strftime('%F')}'")
         .where('orders.status IN (1, 2)')
         .group(:id)
         .order('count(orders) DESC')
         .select('users.name, users.id')
         .limit(10)
-
-    # SELECT users.name, users.id FROM users
-      # JOIN items ON users.id = items.merchant_id
-      # JOIN order_items ON order_items.item_id = items.id
-      # JOIN orders ON orders.id = order_items.order_id
-      # WHERE order_items.fulfilled = true
-    # AND orders.status IN (1, 2)
-      # AND orders.updated_at >= '2019-04-01' AND
-      # 	orders.updated_at < '2019-05-01'
-    # GROUP BY users.name, users.id
-    # ORDER BY count(orders) DESC
-    # LIMIT(10);
-
   end
 
   def self.active_merchants
