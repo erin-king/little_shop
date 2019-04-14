@@ -233,6 +233,33 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
       end
 
+      it "shows top five fastest fulfilling merchants to my city, only viewable by logged in users" do
+
+        visit merchants_path
+
+        within "#top-five-fastest-fulfilling-merchants-user-city" do
+          expect(page).to have_content("The fastest fulfilling merchants to #{current_user.city}:")
+          expect(page).to have_content("#{@m11.name}")
+          expect(page).to have_content("#{@m2.name}")
+          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m3.name}")
+        end
+      end
+
+      xit "shows top five fastest fulfilling merchants to my state, only viewable by logged in users" do
+        visit merchants_path
+
+        within "#top-five-fastest-fulfilling-merchants-user-state" do
+          expect(page).to have_content("The fastest fulfilling merchants to #{current_user.state}:")
+          expect(page).to have_content("#{@m11.name}")
+          expect(page).to have_content("#{@m2.name}")
+          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m3.name}")
+          expect(page).to have_content("#{@m3.name}")
+        end
+      end
+
       it "top 3 merchants by price and quantity, with their revenue" do
         visit merchants_path
 
