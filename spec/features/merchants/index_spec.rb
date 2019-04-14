@@ -177,6 +177,22 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
       end
 
+      it "top 10 merchants who fulfilled non-cancelled orders" do
+        visit merchants_path
+
+        within "#top-ten-merchants-fulfilled-orders-this-month" do
+          expect(page).to have_content("#{@m13.name}")
+          expect(page).to have_content("#{@m12.name}")
+          expect(page).to have_content("#{@m11.name}")
+        end
+
+        within "#top-ten-merchants-fulfilled-orders-last-month" do
+          expect(page).to have_content("#{@m13.name}")
+          expect(page).to have_content("#{@m12.name}")
+          expect(page).to have_content("#{@m11.name}")
+        end
+      end
+
       it "top 3 merchants by price and quantity, with their revenue" do
         visit merchants_path
 
