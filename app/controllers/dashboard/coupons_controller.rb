@@ -1,4 +1,7 @@
 class Dashboard::CouponsController < Dashboard::BaseController
+
+  # before_action :check_coupons
+
   def index
     @coupons = current_user.coupons
   end
@@ -8,8 +11,15 @@ class Dashboard::CouponsController < Dashboard::BaseController
   end
 
   def new
-    @merchant = current_user
-    @coupon = Coupon.new
+    if check_coupons?
+      flash[:alert] = "You have reached your maximum of 5 coupons."
+      redirect_to dashboard_coupons_path
+    else
+      @merchant = current_user
+      @coupon = Coupon.new
+      redirect_to dashboard_coupons_path
+      
+    end
   end
 
   def create

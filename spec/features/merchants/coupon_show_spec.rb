@@ -37,14 +37,23 @@ RSpec.describe "As a merchant" do
       click_button "Create Coupon"
 
       new_coupon = Coupon.last
-save_and_open_page
+
       expect(current_path).to eq(dashboard_coupons_path)
       expect(page).to have_content("Code: #{new_coupon.code}")
       expect(page).to have_content("Discount: #{new_coupon.discount*100}")
     end
 
-    xit "I cannot add a new coupon if I have five coupons, I see a flash message telling me so, I am directed to the index page" do
+    it "I cannot add a new coupon if I have five coupons, I see a flash message telling me so, I am directed to the index page" do
+      @c3 = @merchant.coupons.create(code: "10OFF", discount: 0.10)
+      @c4 = @merchant.coupons.create(code: "40OFF", discount: 0.40, active: false)
+      @c5 = @merchant.coupons.create(code: "50OFF", discount: 0.50, active: false)
 
+      visit dashboard_coupon_path(@c1)
+
+      click_link "Add New Coupon"
+
+      expect(current_path).to eq(dashboard_coupons_path)
+      expect(page).to have_content("You have reached your maximum of 5 coupons.")
     end
 
     it "has an Edit Coupon link" do

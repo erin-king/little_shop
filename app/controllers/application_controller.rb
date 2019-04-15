@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include ActionView::Helpers::TextHelper
 
-  helper_method :current_user, :current_admin?, :current_merchant?, :current_reguser?, :cart, :time_as_words
+  helper_method :current_user, :current_admin?, :current_merchant?, :current_reguser?, :cart, :time_as_words, :check_coupons
 
   def cart
     @cart ||= Cart.new(session[:cart])
@@ -54,5 +54,11 @@ class ApplicationController < ActionController::Base
     hours = time[-8..-7]
     minutes = time[-5..-4]
     "#{days} #{pluralize(hours, 'hour')} #{pluralize(minutes, 'minute')}"
+  end
+
+  def check_coupons?
+    if current_user.merchant?
+      current_user.coupons.count >= 5
+    end
   end
 end

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_reguser, except: [:new, :create]
+  before_action :check_coupons
 
   def new
     @user = User.new
