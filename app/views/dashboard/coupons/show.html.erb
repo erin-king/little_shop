@@ -2,7 +2,7 @@
 
 <h2>Code: <%= @coupon.code %> </h2>
 <h2>Discount: <%= @coupon.discount*100 %>% Off </h2>
-<p><%= link_to "Add New Coupon" %></p>
+<p><%= link_to "Add New Coupon", new_dashboard_coupon_path %></p>
 <p><%= link_to "Edit Coupon" %></p>
 <p><%= link_to "Delete Coupon" %></p>
 <% if @coupon.active? %>

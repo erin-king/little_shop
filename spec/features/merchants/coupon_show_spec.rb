@@ -25,6 +25,28 @@ RSpec.describe "As a merchant" do
       expect(page).to have_link("Add New Coupon")
     end
 
+    it "when I click Add New Coupon I am directed to a form where I enter a new coupon and am returned to the index page and I see my new coupon" do
+      visit dashboard_coupon_path(@c1)
+
+      click_link "Add New Coupon"
+
+      expect(current_path).to eq(new_dashboard_coupon_path)
+
+      fill_in "Code", with: "Freebie"
+      fill_in "Discount", with: 1.0
+      click_button "Create Coupon"
+
+      new_coupon = Coupon.last
+save_and_open_page
+      expect(current_path).to eq(dashboard_coupons_path)
+      expect(page).to have_content("Code: #{new_coupon.code}")
+      expect(page).to have_content("Discount: #{new_coupon.discount*100}")
+    end
+
+    xit "I cannot add a new coupon if I have five coupons, I see a flash message telling me so, I am directed to the index page" do
+
+    end
+
     it "has an Edit Coupon link" do
       visit dashboard_coupon_path(@c1)
 
@@ -52,7 +74,7 @@ RSpec.describe "As a merchant" do
 
     it "has an Enable Coupon link" do
       visit dashboard_coupon_path(@c2)
-save_and_open_page
+
       expect(current_path).to eq(dashboard_coupon_path(@c2))
       expect(page).to have_content(@c2.code)
       expect(page).to have_link("Enable Coupon")
