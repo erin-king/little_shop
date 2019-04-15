@@ -1,0 +1,10 @@
+<h1>Coupon Index</h1>
+
+<h2>My Coupons</h2>
+
+<% @coupons.each do |coupon| %>
+  <section id="coupon-info-id-<%= coupon.id %>">
+    <p>Code: <%= link_to coupon.code, dashboard_coupon_path(coupon) %></p>
+    <p>Discount: <%= coupon.discount*100 %>% Off</p>
+  </section>
+<% end %>
