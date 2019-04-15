@@ -2,3 +2,11 @@
 
 <h2>Code: <%= @coupon.code %> </h2>
 <h2>Discount: <%= @coupon.discount %> </h2>
+<p><%= link_to "Add New Coupon" %></p>
+<p><%= link_to "Edit Coupon" %></p>
+<p><%= link_to "Delete Coupon" %></p>
+<% if @coupon.active? %>
+  <p><%= link_to "Disable Coupon" %></p>
+<% else %>
+  <p><%= link_to "Enable Coupon" %></p>
+<% end %>
