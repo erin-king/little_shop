@@ -3,6 +3,28 @@
 <h2>Merchant Leaderboard</h2>
 <%= tag.div class: "card" do %>
   <%= tag.section class: "statistics card-body float-left m-4" do %>
+
+  <% if current_user %>
+    <%= tag.section id: "top-five-fastest-fulfilling-merchants-user-city", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">The fastest fulfilling merchants to <%= "#{current_user.city}:"%></h5>
+      <ul>
+        <% @top_five_fastest_fulfilling_merchants_city.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= tag.section id: "top-five-fastest-fulfilling-merchants-user-state", class: "card-body float-left m-2" do %>
+      <h5 class="card-title">The fastest fulfilling merchants to <%= "#{current_user.state}:"%></h5>
+      <ul>
+        <% @top_five_fastest_fulfilling_merchants_state.each do |merchant| %>
+          <li><%= merchant.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+
+
     <%= tag.section id: "top-ten-merchants-by-items-this-month", class: "card-body float-left m-2" do %>
       <h5 class="card-title">Top Merchants By Items Sold This Month</h5>
       <ul>
