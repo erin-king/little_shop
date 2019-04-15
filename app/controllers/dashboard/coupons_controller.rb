@@ -1,7 +1,5 @@
 class Dashboard::CouponsController < Dashboard::BaseController
 
-  # before_action :check_coupons
-
   def index
     @coupons = current_user.coupons
   end
@@ -17,8 +15,6 @@ class Dashboard::CouponsController < Dashboard::BaseController
     else
       @merchant = current_user
       @coupon = Coupon.new
-      redirect_to dashboard_coupons_path
-      
     end
   end
 
