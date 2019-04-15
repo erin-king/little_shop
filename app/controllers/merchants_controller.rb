@@ -7,8 +7,8 @@ class MerchantsController < ApplicationController
     end
 
     if current_user
-      @top_five_fastest_fulfilling_merchants_city = @merchants.top_five_fastest_fulfilling_merchants_user_city(current_user.city)
-      @top_five_fastest_fulfilling_merchants_state = @merchants.top_five_fastest_fulfilling_merchants_user_state(current_user.state)
+      @top_five_fastest_fulfilling_merchants_city = User.top_five_fastest_fulfilling_merchants_user_city(current_user.city)
+      @top_five_fastest_fulfilling_merchants_state = User.top_five_fastest_fulfilling_merchants_user_state(current_user.state)
     end
 
     @top_ten_merchants_by_items_this_month = @merchants.top_ten_merchants_by_items(DateTime.now.beginning_of_month, DateTime.now.end_of_month)

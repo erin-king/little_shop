@@ -275,7 +275,7 @@ RSpec.describe User, type: :model do
         expect(User.top_five_fastest_fulfilling_merchants_user_city(u7.city)).to eq([@m1, @m2, @m3, @m4, @m5])
       end
 
-      it ".top_five_fastest_fulfilling_merchants_user_city(city)" do
+      it ".top_five_fastest_fulfilling_merchants_user_state(state)" do
         u7 = create(:user, state: "MI", city: "Frankenmuth")
         @m8 = create(:merchant)
         @m9 = create(:merchant)
