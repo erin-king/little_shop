@@ -4,6 +4,6 @@ class Dashboard::CouponsController < Dashboard::BaseController
   end
 
   def show
-
+    @coupon = Coupon.find(params[:id])
   end
 end

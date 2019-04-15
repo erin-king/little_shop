@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe "merchant coupon index" do
   before :each do
     @merchant = create(:merchant)
-    # @i1, @i2, @i3, @i4, @i5 = create_list(:item, 5, user: @merchant)
     @c1 = @merchant.coupons.create(code: "10OFF", discount: 0.10)
     @c2 = @merchant.coupons.create(code: "15OFF", discount: 0.15)
     @c3 = @merchant.coupons.create(code: "20OFF", discount: 0.20)
