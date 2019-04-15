@@ -14,7 +14,7 @@ RSpec.describe "As a merchant" do
 
       expect(current_path).to eq(dashboard_coupon_path(@c1))
       expect(page).to have_content(@c1.code)
-      expect(page).to have_content(@c1.discount)
+      expect(page).to have_content(@c1.discount*100)
     end
 
     it "has a Add New Coupon link" do
@@ -52,7 +52,7 @@ RSpec.describe "As a merchant" do
 
     it "has an Enable Coupon link" do
       visit dashboard_coupon_path(@c2)
-
+save_and_open_page
       expect(current_path).to eq(dashboard_coupon_path(@c2))
       expect(page).to have_content(@c2.code)
       expect(page).to have_link("Enable Coupon")
