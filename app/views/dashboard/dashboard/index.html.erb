@@ -74,6 +74,8 @@
   <p>
   <% if current_merchant? && current_user == @merchant %>
   <%= link_to 'Items for Sale', dashboard_items_path %>
+  <%= link_to 'Manage My Coupons', dashboard_coupons_path %>
+
   <% elsif current_admin? %>
   <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
   <% end %>

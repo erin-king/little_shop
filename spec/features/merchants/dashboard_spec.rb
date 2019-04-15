@@ -21,6 +21,7 @@ RSpec.describe 'merchant dashboard' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
         visit dashboard_path
         expect(page).to_not have_button("Downgrade to User")
+        expect(page).to have_link("Manage My Coupons")
       end
       scenario 'as an admin' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
