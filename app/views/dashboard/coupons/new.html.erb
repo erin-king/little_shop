@@ -1,6 +1,6 @@
 <h1>Enter New Coupon Information</h1>
 
-<%= form_for [@merchant, @coupon], url: dashboard_coupons_path do |f| %>
+<%= form_for @coupon, url: dashboard_coupons_path do |f| %>
   <p>
     <%= f.label :code %>
     <%= f.text_field :code %>
