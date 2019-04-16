@@ -29,6 +29,42 @@ class Dashboard::CouponsController < Dashboard::BaseController
     end
   end
 
+  def edit
+    @coupon = Coupon.find(params[:id])
+  end
+
+  # def update
+  #   @coupon = Coupon.find(params[:id])
+  #   if @coupon.update(coupon_params)
+  #     flash[:success] = "Your coupon edit has been saved."
+  #     redirect_to dashboard_coupons_path
+  #   else
+  #     flash[:alert] = @coupon.errors.full_messages
+  #     @coupon = Coupon.find(params[:id])
+  #     render :edit
+  #   end
+  # end
+
+  def update
+    @coupon = Coupon.find(params[:id])
+    if @coupon && @coupon.user == current_user
+      # if @coupon && @coupon.used?
+      #   flash[:error] = "You cannot edit this coupon."
+      # else
+        if @coupon.update(coupon_params)
+          flash[:success] = "Your coupon edit has been saved."
+          redirect_to dashboard_coupons_path
+        else
+          flash[:alert] = @coupon.errors.full_messages
+          @coupon = Coupon.find(params[:id])
+          render :edit
+        end
+      # end
+    else
+      render file: 'public/404', status: 404
+    end
+  end
+
   def destroy
     @coupon = Coupon.find(params[:id])
     if @coupon && @coupon.user == current_user

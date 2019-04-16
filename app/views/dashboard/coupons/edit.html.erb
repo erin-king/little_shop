@@ -1,0 +1,9 @@
+<h3>Edit Your Coupon: <%= @coupon.code %></h3>
+
+<%= form_for @coupon, url: dashboard_coupon_path(@coupon) do |f| %>
+  <p>
+    <%= f.label :discount %>
+    <%= f.text_field :discount %>
+  </p>
+  <%= f.submit %>
+<% end %>

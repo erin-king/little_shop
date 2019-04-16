@@ -75,6 +75,44 @@ RSpec.describe "As a merchant" do
       expect(page).to have_link("Edit Coupon")
     end
 
+    it "edits a coupon when I click Edit Coupon link, I'm returned to the coupon index and see the edited value on the coupon" do
+
+      visit login_path
+      fill_in :email, with: @merchant.email
+      fill_in :password, with: @merchant.password
+      click_button "Log in"
+
+      visit dashboard_coupon_path(@c1)
+
+      expect(current_path).to eq(dashboard_coupon_path(@c1))
+      expect(page).to have_content(@c1.code)
+
+      click_on "Edit Coupon"
+
+      expect(current_path).to eq(edit_dashboard_coupon_path(@c1))
+
+      fill_in "Discount", with: 0.5
+      click_button "Update Coupon"
+
+      expect(current_path).to eq(dashboard_coupons_path)
+      expect(page).to have_content("Your coupon edit has been saved.")
+
+      within "#coupon-info-id-#{@c1.id}" do
+        expect(page).to_not have_content("Discount: 10.0% Off")
+        expect(page).to have_content("Discount: 50.0% Off")
+      end
+    end
+
+    xit "cannot Edit Coupon if coupon has been used" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+      visit dashboard_coupon_path(@c6)
+
+      expect(current_path).to eq(dashboard_coupon_path(@c6))
+      expect(page).to have_content("You cannot delete this coupon.")
+      expect(page).to have_content(@c6.code)
+    end
+
     it "has a Delete Coupon link" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 
@@ -93,7 +131,6 @@ RSpec.describe "As a merchant" do
       expect(current_path).to eq(dashboard_coupon_path(@c6))
       expect(page).to have_content("You cannot delete this coupon.")
       expect(page).to have_content(@c6.code)
-      expect(page).to_not have_link("Delete Coupon")
     end
 
     it "deletes a coupon when I click Delete Coupon link, I'm returned to the coupon index and do not see the deleted coupon" do
