@@ -3,6 +3,7 @@
   <p>Your Cart is empty.</p>
 <% else %>
   <h3>Total: <%= number_to_currency(cart.total) %></h3>
+
   <% if current_user %>
     <%= button_to "Check Out", profile_orders_path, method: :post %>
   <% else %>
@@ -20,7 +21,7 @@
   </p>
   <% end %>
 
-  <%= @coupon.code if @coupon %>
+  <p><%="Current Coupon: #{@coupon.code}" if @coupon %></p>
 
   <%= button_to "Empty Cart", empty_cart_path, method: :delete %>
   <ul id="items">

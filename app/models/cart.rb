@@ -43,4 +43,8 @@ class Cart
   def subtotal(item)
     count_of(item.id) * item.price
   end
+
+  # def discounted_total
+  #
+  # end
 end
