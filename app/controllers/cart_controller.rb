@@ -2,10 +2,17 @@ class CartController < ApplicationController
   before_action :visitor_or_user
 
   def show
+    @coupon = Coupon.find(session[:coupon]) if session[:coupon]
   end
 
   def add_coupon
-    binding.pry
+    if coupon = Coupon.find_by(code: params[:code])
+      session[:coupon] = coupon.id
+      flash[:success] = "You've added your coupon!"
+    else
+      flash[:alert] = "Not a coupon. Please try again."
+    end
+    redirect_to cart_path
   end
 
   def increment

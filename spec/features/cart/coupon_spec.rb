@@ -27,7 +27,7 @@ RSpec.describe "using coupons in the cart" do
 
       expect(current_path).to eq(cart_path)
       expect(page).to have_content("You've added your coupon!")
-      expect(page).to have_content("10OFF")
+      expect(page).to have_content("10OFF") 
     end
   end
 end
