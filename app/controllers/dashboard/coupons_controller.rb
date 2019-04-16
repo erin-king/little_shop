@@ -33,18 +33,6 @@ class Dashboard::CouponsController < Dashboard::BaseController
     @coupon = Coupon.find(params[:id])
   end
 
-  # def update
-  #   @coupon = Coupon.find(params[:id])
-  #   if @coupon.update(coupon_params)
-  #     flash[:success] = "Your coupon edit has been saved."
-  #     redirect_to dashboard_coupons_path
-  #   else
-  #     flash[:alert] = @coupon.errors.full_messages
-  #     @coupon = Coupon.find(params[:id])
-  #     render :edit
-  #   end
-  # end
-
   def update
     @coupon = Coupon.find(params[:id])
     if @coupon && @coupon.user == current_user
@@ -82,7 +70,7 @@ class Dashboard::CouponsController < Dashboard::BaseController
   private
 
   def coupon_params
-    params.require(:coupon).permit(:code, :discount)
+    params.require(:coupon).permit(:code, :discount, :active) #active: 1 = true, 0 = false
   end
 
 end

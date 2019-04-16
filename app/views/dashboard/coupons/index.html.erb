@@ -1,6 +1,7 @@
 <h1>Coupon Index</h1>
 
 <h2>My Coupons</h2>
+<p><%= link_to "Add New Coupon", new_dashboard_coupon_path %></p>
 
 <% @coupons.each do |coupon| %>
   <section id="coupon-info-id-<%= coupon.id %>">
