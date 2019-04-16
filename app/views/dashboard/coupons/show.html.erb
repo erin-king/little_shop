@@ -5,7 +5,8 @@
 <p><%= link_to "Add New Coupon", new_dashboard_coupon_path %></p>
 
 <p><%= link_to "Edit Coupon" %></p>
-<p><%= link_to "Delete Coupon" %></p>
+<p><%= link_to "Delete Coupon", dashboard_coupon_path(@coupon), method: :delete  %></p>
+
 <% if @coupon.active? %>
   <p><%= link_to "Disable Coupon" %></p>
 <% else %>
