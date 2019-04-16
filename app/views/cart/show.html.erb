@@ -10,7 +10,16 @@
       or <%= link_to "log in", login_path %> to check out.</p>
   <% end %>
 
-<!-- put coupon field here -->
+  <%= form_tag add_coupon_path(cart), method: :patch do %>
+  <p>
+    <%= label_tag :code %>:
+    <%= text_field_tag :code %>
+  </p>
+  <p>
+    <%= submit_tag "Apply Coupon" %>
+  </p>
+  <% end %>
+
   <%= button_to "Empty Cart", empty_cart_path, method: :delete %>
   <ul id="items">
     <% cart.items.each do |item, quantity| %>

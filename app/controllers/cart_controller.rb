@@ -4,6 +4,10 @@ class CartController < ApplicationController
   def show
   end
 
+  def add_coupon
+    binding.pry
+  end
+
   def increment
     item = Item.find(params[:id])
     if item.inventory <= cart.count_of(item.id)

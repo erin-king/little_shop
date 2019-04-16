@@ -18,20 +18,15 @@ RSpec.describe "using coupons in the cart" do
       # fill_in :email, with: @user_1.email
       # fill_in :password, with: @user_1.password
       # click_button "Log in"
-      visit cart_path
       visit item_path(@item_1)
       click_on "Add to Cart"
-      visit item_path(@item_2)
-      click_on "Add to Cart"
-      visit item_path(@item_3)
-      click_on "Add to Cart"
-      visit item_path(@item_3)
-      click_on "Add to Cart"
-      
-      fill_in "Coupon Code", with: "10OFF"
-      click_button "Submit Code"
+      visit cart_path
+
+      fill_in "Code", with: "10OFF"
+      click_button "Apply Coupon"
 
       expect(current_path).to eq(cart_path)
+      expect(page).to have_content("You've added your coupon!")
       expect(page).to have_content("10OFF")
     end
   end
