@@ -14,7 +14,7 @@
     <% cart.items.each do |item, quantity| %>
       <li id="item-<%= item.id %>">
         <%= item.name %>
-        <%= image_tag item.image %>
+        <%= image_tag item.image, class: "cart-item-image" %>
         Sold By: <%= item.user.name %>
         <%=  number_to_currency(item.price) %>
         quantity: <%= quantity %>
