@@ -42,6 +42,8 @@ class Profile::OrdersController < ApplicationController
     redirect_to profile_orders_path
   end
 
+  private
+
   def apply_discount(item)
     coupon = Coupon.find(session[:coupon]["id"]) if session[:coupon]
     discount = 0
@@ -52,5 +54,4 @@ class Profile::OrdersController < ApplicationController
       end
     discount
   end
-
 end
