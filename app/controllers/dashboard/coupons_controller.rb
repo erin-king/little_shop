@@ -36,9 +36,10 @@ class Dashboard::CouponsController < Dashboard::BaseController
   def update
     @coupon = Coupon.find(params[:id])
     if @coupon && @coupon.user == current_user
-      # if @coupon && @coupon.used?
-      #   flash[:error] = "You cannot edit this coupon."
-      # else
+      if @coupon && @coupon.used?
+        flash[:error] = "You cannot edit this coupon."
+        redirect_to dashboard_coupon_path(@coupon)
+      else
         if @coupon.update(coupon_params)
           flash[:success] = "Your coupon edit has been saved."
           redirect_to dashboard_coupons_path
@@ -47,7 +48,7 @@ class Dashboard::CouponsController < Dashboard::BaseController
           @coupon = Coupon.find(params[:id])
           render :edit
         end
-      # end
+      end
     else
       render file: 'public/404', status: 404
     end
@@ -56,11 +57,12 @@ class Dashboard::CouponsController < Dashboard::BaseController
   def destroy
     @coupon = Coupon.find(params[:id])
     if @coupon && @coupon.user == current_user
-      # if @coupon && @coupon.used?
-      #   flash[:error] = "You cannot delete this coupon."
-      # else
+      if @coupon && @coupon.used?
+        flash[:error] = "You cannot delete this coupon."
+        redirect_to dashboard_coupon_path(@coupon)
+      else
         @coupon.destroy
-      # end
+      end
       redirect_to dashboard_coupons_path
     else
       render file: 'public/404', status: 404

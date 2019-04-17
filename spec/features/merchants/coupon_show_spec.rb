@@ -3,9 +3,11 @@ require 'rails_helper'
 RSpec.describe "As a merchant" do
   before :each do
     @merchant = create(:merchant)
+    @user = create(:user)
     @c1 = @merchant.coupons.create(code: "10OFF", discount: 0.10)
     @c2 = @merchant.coupons.create(code: "25OFF", discount: 0.25, active: false)
     @c6 = @merchant.coupons.create(code: "60OFF", discount: 0.60)
+    order = Order.create(user: @user, status: :pending, coupon: @c6.code)
   end
 
   describe "when I visit the coupon show page" do
@@ -57,29 +59,27 @@ RSpec.describe "As a merchant" do
       end
     end
 
-    xit "cannot Edit Coupon if coupon has been used" do
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
-
+    it "cannot Edit Coupon if coupon has been used" do
+      # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+      visit login_path
+      fill_in :email, with: @merchant.email
+      fill_in :password, with: @merchant.password
+      click_button "Log in"
       visit dashboard_coupon_path(@c6)
 
+      click_on "Edit Coupon"
+
       expect(current_path).to eq(dashboard_coupon_path(@c6))
-      expect(page).to have_content("You cannot delete this coupon.")
+      expect(page).to have_content("You cannot edit this coupon.")
       expect(page).to have_content(@c6.code)
     end
 
-    it "has a Delete Coupon link" do
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
-
-      visit dashboard_coupon_path(@c1)
-
-      expect(current_path).to eq(dashboard_coupon_path(@c1))
-      expect(page).to have_content(@c1.code)
-      expect(page).to have_link("Delete Coupon")
-    end
-
-    xit "cannot Delete Coupon if coupon has been used" do
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
-
+    it "cannot Delete Coupon if coupon has been used" do
+      # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+      visit login_path
+      fill_in :email, with: @merchant.email
+      fill_in :password, with: @merchant.password
+      click_button "Log in"
       visit dashboard_coupon_path(@c6)
 
       expect(current_path).to eq(dashboard_coupon_path(@c6))
