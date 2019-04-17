@@ -31,12 +31,25 @@ class Profile::OrdersController < ApplicationController
   end
 
   def create
-    order = Order.create(user: current_user, status: :pending)
+    coupon = Coupon.find(session[:coupon]["id"])
+    order = Order.create(user: current_user, status: :pending, coupon: coupon.code)
     cart.items.each do |item, quantity|
-      order.order_items.create(item: item, quantity: quantity, price: item.price)
+      discount = apply_discount(item, coupon)
+      order.order_items.create(item: item, quantity: quantity, price: item.price, discount: discount)
     end
     session.delete(:cart)
     flash[:success] = "Your order has been created!"
     redirect_to profile_orders_path
   end
+
+  def apply_discount(item, coupon)
+    discount = 0
+      if coupon && coupon.user_id == item.merchant_id
+        discount = item.price * coupon.discount
+      else
+        discount = 0
+      end
+    discount
+  end
+
 end
