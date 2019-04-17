@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "using coupons in the cart" do
   before :each do
     @user_1 = create(:user)
+    @user_2 = create(:user)
     @merchant_1 = create(:merchant)
     @merchant_2 = create(:merchant)
     @item_1 = create(:item, user: @merchant_1, inventory: 3)
@@ -77,6 +78,54 @@ RSpec.describe "using coupons in the cart" do
       expect(page).to have_content("Total: $7.50")
       #item_1 = $3, coupon applied to item_1 , item_2 = 4.5
       expect(page).to have_content("Discounted Total: $7.20")
+    end
+
+    it "displays discounted total in cart when coupon is applied and can only be applied to the coupon's merchant's items" do
+      visit login_path
+      fill_in :email, with: @user_1.email
+      fill_in :password, with: @user_1.password
+      click_button "Log in"
+
+      visit item_path(@item_1)
+      click_on "Add to Cart"
+      visit item_path(@item_2)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: @coupon_10.code
+      click_button "Apply Coupon"
+
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("You've added your coupon!")
+      expect(page).to have_content("10OFF")
+      expect(page).to have_content("Total: $7.50")
+      #item_1 = $3, coupon applied to item_1 , item_2 = 4.5
+      expect(page).to have_content("Discounted Total: $7.20")
+
+      visit logout_path
+
+      visit login_path
+      fill_in :email, with: @user_2.email
+      fill_in :password, with: @user_2.password
+      click_button "Log in"
+
+      visit item_path(@item_1)
+      click_on "Add to Cart"
+      visit item_path(@item_1)
+      click_on "Add to Cart"
+      visit item_path(@item_2)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: @coupon_10.code
+      click_button "Apply Coupon"
+
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("You've added your coupon!")
+      expect(page).to have_content("10OFF")
+      expect(page).to have_content("Total: $10.50")
+      #item_1 = $3, coupon applied to item_1 , item_2 = 4.5
+      expect(page).to have_content("Discounted Total: $9.90")
     end
   end
 end
