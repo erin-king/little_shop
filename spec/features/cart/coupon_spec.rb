@@ -45,7 +45,7 @@ RSpec.describe "using coupons in the cart" do
       click_on "Add to Cart"
       visit cart_path
 
-      fill_in "Code", with: "10OFF"
+      fill_in "Code", with: @coupon_10.code
       click_button "Apply Coupon"
 
       expect(current_path).to eq(cart_path)
@@ -58,6 +58,25 @@ RSpec.describe "using coupons in the cart" do
       expect(current_path).to eq(cart_path)
       expect(page).to have_content("10OFF")
     end
+
+    it "displays discounted total in cart when coupon is applied and can only be applied to the coupon's merchant's items" do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
+
+      visit item_path(@item_1)
+      click_on "Add to Cart"
+      visit item_path(@item_2)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: @coupon_10.code
+      click_button "Apply Coupon"
+
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("You've added your coupon!")
+      expect(page).to have_content("10OFF")
+      expect(page).to have_content("Total: $7.50")
+      #item_1 = $3, coupon applied to item_1 , item_2 = 4.5
+      expect(page).to have_content("Discounted Total: $7.20")
+    end
   end
 end
-  # <h4 id="flamin-hot">Discounted Total: <%= number_to_currency(cart.discounted_total) %></h4>

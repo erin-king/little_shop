@@ -70,7 +70,26 @@ RSpec.describe Cart do
         expect(@cart.subtotal(@item_1)).to eq(@cart.count_of(@item_1.id) * @item_1.price)
       end
     end
+    describe "#discounted_total" do
+      it "calculates the discounted total of the coupon applicable items plus nonapplicable items" do
+        user_1 = create(:user)
+        merchant_1 = create(:merchant)
+        merchant_2 = create(:merchant)
+        item_1 = create(:item, user: merchant_1, inventory: 3)
+        item_2 = create(:item, user: merchant_2)
+        item_3 = create(:item, user: merchant_2)
+        coupon_10 = merchant_1.coupons.create(code: "10OFF", discount: 0.1)
+        coupon_20 = merchant_2.coupons.create(code: "20OFF", discount: 0.2)
+        cart = Cart.new({item_1.id.to_s => 1, item_2.id.to_s => 1})
+
+        expect(cart.discounted_total(coupon_10)).to eq(12.9)
+      end
+    end
   end
+  #
+  # @item_1 = create(:item, id: 1) 3.00 x 3 = 9.00
+  # @item_4 = create(:item, id: 4) 4.5 x 2 = 9.00
+  # @cart = Cart.new({"1" => 3, "4" => 2})
 
   describe "Cart with empty contents" do
     before :each do

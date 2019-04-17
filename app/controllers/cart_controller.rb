@@ -2,12 +2,12 @@ class CartController < ApplicationController
   before_action :visitor_or_user
 
   def show
-    @coupon = Coupon.find(session[:coupon]) if session[:coupon]
+    @coupon = Coupon.find(session[:coupon]["id"]) if session[:coupon]
   end
 
   def add_coupon
     if coupon = Coupon.find_by(code: params[:code])
-      session[:coupon] = coupon.id
+      session[:coupon] = coupon
       flash[:success] = "You've added your coupon!"
     else
       flash[:alert] = "Not a coupon. Please try again."

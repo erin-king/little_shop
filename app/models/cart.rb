@@ -44,7 +44,15 @@ class Cart
     count_of(item.id) * item.price
   end
 
-  # def discounted_total
-  #
-  # end
+  def discounted_total(coupon)
+    total = 0
+    items.keys.each do |item|
+      if coupon && coupon.user_id == item.merchant_id
+        total += (subtotal(item) * (1.0 - coupon.discount))
+      else
+        total += subtotal(item)
+      end
+    end
+    total
+  end
 end
