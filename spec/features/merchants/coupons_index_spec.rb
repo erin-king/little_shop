@@ -38,11 +38,11 @@ RSpec.describe "merchant coupon index" do
     end
 
     click_link @c4.code
-    
+
     expect(current_path).to eq(dashboard_coupon_path(@c4))
   end
 
-  it "has a Add New Coupon link" do
+  it "has an Add New Coupon link" do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
 
     visit dashboard_coupons_path

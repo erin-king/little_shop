@@ -86,10 +86,6 @@ RSpec.describe Cart do
       end
     end
   end
-  #
-  # @item_1 = create(:item, id: 1) 3.00 x 3 = 9.00
-  # @item_4 = create(:item, id: 4) 4.5 x 2 = 9.00
-  # @cart = Cart.new({"1" => 3, "4" => 2})
 
   describe "Cart with empty contents" do
     before :each do

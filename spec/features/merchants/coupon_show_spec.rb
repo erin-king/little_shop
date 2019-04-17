@@ -75,7 +75,6 @@ RSpec.describe "As a merchant" do
     end
 
     it "cannot delete a coupon if the coupon has been used" do
-      # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
       visit login_path
       fill_in :email, with: @merchant.email
       fill_in :password, with: @merchant.password
