@@ -23,9 +23,6 @@ class Dashboard::CouponsController < Dashboard::BaseController
     if @coupon.save
       flash[:success] = "Your coupon has been added!"
       redirect_to dashboard_coupons_path
-    else
-      flash[:danger] = @coupon.errors.full_messages
-      render :new
     end
   end
 
@@ -42,16 +39,10 @@ class Dashboard::CouponsController < Dashboard::BaseController
   def update
     @coupon = Coupon.find(params[:id])
     if @coupon && @coupon.user == current_user
-        if @coupon.update(coupon_params)
-          flash[:success] = "Your coupon edit has been saved."
-          redirect_to dashboard_coupons_path
-        else
-          flash[:alert] = @coupon.errors.full_messages
-          @coupon = Coupon.find(params[:id])
-          render :edit
-        end
-    else
-      render file: 'public/404', status: 404
+      if @coupon.update(coupon_params)
+        flash[:success] = "Your coupon edit has been saved."
+        redirect_to dashboard_coupons_path
+      end
     end
   end
 
@@ -64,8 +55,6 @@ class Dashboard::CouponsController < Dashboard::BaseController
         @coupon.destroy
       end
       redirect_to dashboard_coupons_path
-    else
-      render file: 'public/404', status: 404
     end
   end
 

@@ -127,5 +127,54 @@ RSpec.describe "using coupons in the cart" do
       #item_1 = $3, coupon applied to item_1 , item_2 = 4.5
       expect(page).to have_content("Discounted Total: $9.90")
     end
+
+    it "displays an error message and does not apply discount if a user tries using the same coupon on a different order" do
+      visit login_path
+      fill_in :email, with: @user_2.email
+      fill_in :password, with: @user_2.password
+      click_button "Log in"
+      visit item_path(@item_2)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: @coupon_20.code
+      click_button "Apply Coupon"
+
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("You've added your coupon!")
+      expect(page).to have_content("20OFF")
+      expect(page).to have_content("Total: $4.50")
+      expect(page).to have_content("Discounted Total: $3.60")
+
+      visit cart_path
+      click_button "Check Out"
+
+      visit item_path(@item_3)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: @coupon_20.code
+      click_button "Apply Coupon"
+
+      expect(page).to have_content("Already used. Please use a different coupon.")
+      expect(page).to have_content("Total: $6.00")
+    end
+
+    it "displays an error message user enters an incorrect coupon code" do
+      visit login_path
+      fill_in :email, with: @user_2.email
+      fill_in :password, with: @user_2.password
+      click_button "Log in"
+      visit item_path(@item_2)
+      click_on "Add to Cart"
+      visit cart_path
+
+      fill_in "Code", with: "NOTREALCOUPON"
+      click_button "Apply Coupon"
+
+      expect(current_path).to eq(cart_path)
+      expect(page).to have_content("Not a coupon. Please try again.")
+      expect(page).to have_content("Total: $4.50")
+    end
   end
 end

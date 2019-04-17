@@ -10,14 +10,14 @@ class CartController < ApplicationController
     if coupon
       if Coupon.already_used?(coupon.code, current_user)
         flash[:alert] = "Already used. Please use a different coupon."
-        session[:coupon].destroy
+        session.delete(:coupon)
       else
         session[:coupon] = coupon
         flash[:success] = "You've added your coupon!"
       end
     else
       flash[:alert] = "Not a coupon. Please try again."
-      session[:coupon].destroy
+      session.delete(:coupon)
     end
     redirect_to cart_path
   end
