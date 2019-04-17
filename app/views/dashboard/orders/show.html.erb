@@ -5,6 +5,9 @@
   <p><%= @user.city %>, <%= @user.state %> <%= @user.zip %></p>
 
   <p>Order Status: <%= @order.status %></p>
+  <% if @order.coupon != nil %>
+    <p>Coupon Applied: <%= @order.coupon %></p>
+  <% end %>
 
   <% @order_items.each do |oitem| %>
     <div class="card float-left m-3 order-item-card" id="oitem-<%= oitem.id %>">
