@@ -92,7 +92,8 @@ RSpec.describe Order, type: :model do
     it '.packaged_orders' do
       expect(Order.packaged_orders).to eq([@packaged_orders[0], @packaged_orders[1], @packaged_orders[2]])
     end
-    it '.shipped_orders' do
+    it '.shipped_orders' do #THIS TEST FAILS, ORDER IS NOT CONSTANT
+      # expect(Order.shipped_orders).to eq([@o6, @o1, @o2, @o3, @o4, @o5])
       expect(Order.shipped_orders).to eq([@o1, @o2, @o3, @o4, @o5, @o6])
     end
     it '.cancelled_orders' do

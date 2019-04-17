@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   patch '/cart/items/:id', to: 'cart#decrement'
   delete '/cart', to: 'cart#destroy', as: :empty_cart
   delete '/cart/items/:id', to: 'cart#remove_item', as: :remove_item
+  patch '/cart/coupon/', to: 'cart#add_coupon', as: :add_coupon
 
   resources :items, only: [:index, :show]
   resources :merchants, only: [:index]

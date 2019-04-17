@@ -3,18 +3,33 @@
   <p>Your Cart is empty.</p>
 <% else %>
   <h3>Total: <%= number_to_currency(cart.total) %></h3>
+  <h4 id="flamin-hot">Discounted Total: <%= number_to_currency(cart.discounted_total(@coupon)) %></h4>
+
   <% if current_user %>
     <%= button_to "Check Out", profile_orders_path, method: :post %>
   <% else %>
     <p>You must <%= link_to "register", registration_path %>
       or <%= link_to "log in", login_path %> to check out.</p>
   <% end %>
+
+  <%= form_tag add_coupon_path, method: :patch do %>
+  <p>
+    <%= label_tag :code %>
+    <%= text_field_tag :code %>
+  </p>
+  <p>
+    <%= submit_tag "Apply Coupon" %>
+  </p>
+  <% end %>
+
+  <p><%="Current Coupon: #{@coupon.code}" if @coupon %></p>
+
   <%= button_to "Empty Cart", empty_cart_path, method: :delete %>
   <ul id="items">
     <% cart.items.each do |item, quantity| %>
       <li id="item-<%= item.id %>">
         <%= item.name %>
-        <%= image_tag item.image %>
+        <%= image_tag item.image, class: "cart-item-image" %>
         Sold By: <%= item.user.name %>
         <%=  number_to_currency(item.price) %>
         quantity: <%= quantity %>
