@@ -3,8 +3,9 @@
   <p>Your Cart is empty.</p>
 <% else %>
   <h3>Total: <%= number_to_currency(cart.total) %></h3>
-  <h4 id="flamin-hot">Discounted Total: <%= number_to_currency(cart.discounted_total(@coupon)) %></h4>
-
+  <% if cart.total != cart.discounted_total(@coupon) %>
+    <h4 id="flamin-hot">Discounted Total: <%= number_to_currency(cart.discounted_total(@coupon)) %></h4>
+  <% end %>
   <% if current_user %>
     <%= button_to "Check Out", profile_orders_path, method: :post %>
   <% else %>

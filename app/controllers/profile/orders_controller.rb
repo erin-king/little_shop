@@ -37,10 +37,13 @@ class Profile::OrdersController < ApplicationController
       discount = apply_discount(item)
       order.order_items.create(item: item, quantity: quantity, price: item.price-discount, discount: discount)
     end
+    session.delete(:coupon)
     session.delete(:cart)
     flash[:success] = "Your order has been created!"
     redirect_to profile_orders_path
   end
+
+  private
 
   def apply_discount(item)
     coupon = Coupon.find(session[:coupon]["id"]) if session[:coupon]
@@ -52,5 +55,4 @@ class Profile::OrdersController < ApplicationController
       end
     discount
   end
-
 end

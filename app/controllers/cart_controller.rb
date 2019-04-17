@@ -6,11 +6,18 @@ class CartController < ApplicationController
   end
 
   def add_coupon
-    if coupon = Coupon.find_by(code: params[:code])
-      session[:coupon] = coupon
-      flash[:success] = "You've added your coupon!"
+    coupon = Coupon.find_by(code: params[:code])
+    if coupon
+      if Coupon.already_used?(coupon.code, current_user)
+        flash[:alert] = "Already used. Please use a different coupon."
+        session.delete(:coupon)
+      else
+        session[:coupon] = coupon
+        flash[:success] = "You've added your coupon!"
+      end
     else
       flash[:alert] = "Not a coupon. Please try again."
+      session.delete(:coupon)
     end
     redirect_to cart_path
   end
