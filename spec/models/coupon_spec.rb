@@ -21,6 +21,7 @@ RSpec.describe Coupon, type: :model do
         coupon_10 = merchant_1.coupons.create(code: "10OFF", discount: 0.1)
         coupon_20 = merchant_2.coupons.create(code: "20OFF", discount: 0.2)
         order = Order.create(user: user_1, status: :pending, coupon: coupon_10.code)
+
         expect(coupon_10.used?).to eq(true)
         expect(coupon_20.used?).to eq(false)
       end

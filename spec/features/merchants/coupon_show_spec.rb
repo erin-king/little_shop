@@ -59,7 +59,7 @@ RSpec.describe "As a merchant" do
       end
     end
 
-    it "cannot Edit Coupon if coupon has been used" do
+    it "cannot edit coupon if coupon has been used" do
       # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
       visit login_path
       fill_in :email, with: @merchant.email
@@ -74,7 +74,7 @@ RSpec.describe "As a merchant" do
       expect(page).to have_content(@c6.code)
     end
 
-    it "cannot Delete Coupon if coupon has been used" do
+    it "cannot delete a coupon if the coupon has been used" do
       # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
       visit login_path
       fill_in :email, with: @merchant.email
@@ -82,7 +82,9 @@ RSpec.describe "As a merchant" do
       click_button "Log in"
       visit dashboard_coupon_path(@c6)
 
-      expect(current_path).to eq(dashboard_coupon_path(@c6))
+      click_on "Delete Coupon"
+
+      expect(current_path).to eq(dashboard_coupons_path)
       expect(page).to have_content("You cannot delete this coupon.")
       expect(page).to have_content(@c6.code)
     end
